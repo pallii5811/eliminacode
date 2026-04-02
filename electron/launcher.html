@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CodaSacra — Launcher</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+      background: linear-gradient(135deg, #1a0e2e 0%, #0f0a1e 50%, #0d1117 100%);
+      color: white;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 40px 24px;
+      user-select: none;
+    }
+
+    .logo {
+      width: 72px; height: 72px;
+      background: rgba(139, 92, 246, 0.15);
+      border: 2px solid rgba(139, 92, 246, 0.3);
+      border-radius: 20px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 36px;
+      margin-bottom: 16px;
+    }
+
+    h1 {
+      font-size: 28px;
+      font-weight: 800;
+      margin-bottom: 4px;
+      background: linear-gradient(135deg, #d4a853, #f0d78c);
+      background-clip: text;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .subtitle {
+      font-size: 13px;
+      color: rgba(255,255,255,0.4);
+      margin-bottom: 40px;
+    }
+
+    .buttons {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      width: 100%;
+      max-width: 360px;
+    }
+
+    .btn {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      padding: 20px 24px;
+      border-radius: 16px;
+      border: 2px solid rgba(255,255,255,0.08);
+      background: rgba(255,255,255,0.04);
+      color: white;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      text-decoration: none;
+    }
+
+    .btn:hover {
+      background: rgba(255,255,255,0.08);
+      border-color: rgba(139, 92, 246, 0.4);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 32px rgba(139, 92, 246, 0.15);
+    }
+
+    .btn:active { transform: translateY(0); }
+
+    .btn-icon {
+      width: 48px; height: 48px;
+      border-radius: 14px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 22px;
+      flex-shrink: 0;
+    }
+
+    .btn-display .btn-icon { background: rgba(139, 92, 246, 0.2); }
+    .btn-operator .btn-icon { background: rgba(212, 168, 83, 0.2); }
+    .btn-ticket .btn-icon { background: rgba(34, 197, 94, 0.2); }
+
+    .btn-text h3 {
+      font-size: 16px;
+      font-weight: 700;
+      margin-bottom: 2px;
+    }
+
+    .btn-text p {
+      font-size: 11px;
+      color: rgba(255,255,255,0.4);
+    }
+
+    .version {
+      margin-top: 40px;
+      font-size: 11px;
+      color: rgba(255,255,255,0.15);
+    }
+
+    .demo-badge {
+      display: inline-block;
+      margin-top: 8px;
+      padding: 4px 12px;
+      border-radius: 999px;
+      background: rgba(212, 168, 83, 0.15);
+      color: #d4a853;
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="logo">✝</div>
+  <h1>CodaSacra</h1>
+  <p class="subtitle">Sistema Elimina-Code Digitale</p>
+
+  <div class="buttons">
+    <a class="btn btn-display" href="http://127.0.0.1:3000/display">
+      <div class="btn-icon">🖥</div>
+      <div class="btn-text">
+        <h3>Display Pubblico</h3>
+        <p>Per TV / Monitor — numeri grandi + annuncio vocale</p>
+      </div>
+    </a>
+
+    <a class="btn btn-operator" href="http://127.0.0.1:3000/operatore">
+      <div class="btn-icon">⚙</div>
+      <div class="btn-text">
+        <h3>Pannello Operatore</h3>
+        <p>Per il sacerdote — gestisci la coda</p>
+      </div>
+    </a>
+
+    <a class="btn btn-ticket" href="http://127.0.0.1:3000/ticket">
+      <div class="btn-icon">🎟</div>
+      <div class="btn-text">
+        <h3>Prendi Numero</h3>
+        <p>Per i fedeli — ritira il tuo ticket</p>
+      </div>
+    </a>
+  </div>
+
+  <span class="demo-badge">DEMO MODE — Funziona senza internet</span>
+  <p class="version">CodaSacra v1.0.0</p>
+
+</body>
+</html>

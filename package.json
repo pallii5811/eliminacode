@@ -1,0 +1,112 @@
+{
+  "name": "codasacra",
+  "private": true,
+  "version": "1.0.0",
+  "main": "electron/main.js",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "electron:dev": "vite build && electron . --dev",
+    "electron:start": "electron .",
+    "electron:build-win": "vite build && electron-builder --win portable",
+    "electron:build-linux": "vite build && electron-builder --linux AppImage",
+    "electron:build-all": "vite build && electron-builder --win portable --linux AppImage"
+  },
+  "dependencies": {
+    "@supabase/supabase-js": "^2.38.0",
+    "express": "^4.18.2",
+    "lucide-react": "^0.294.0",
+    "qrcode.react": "^3.1.0",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-router-dom": "^6.20.0"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-react": "^4.2.0",
+    "autoprefixer": "^10.4.16",
+    "electron": "^28.0.0",
+    "electron-builder": "^24.9.0",
+    "electron-packager": "^17.1.2",
+    "postcss": "^8.4.32",
+    "tailwindcss": "^3.3.6",
+    "vite": "^5.0.0"
+  },
+  "build": {
+    "appId": "com.codasacra.app",
+    "productName": "CodaSacra",
+    "directories": {
+      "output": "release"
+    },
+    "files": [
+      "dist/**/*",
+      "electron/**/*",
+      "public/**/*",
+      "node_modules/express/**/*",
+      "node_modules/mime/**/*",
+      "node_modules/send/**/*",
+      "node_modules/serve-static/**/*",
+      "node_modules/fresh/**/*",
+      "node_modules/range-parser/**/*",
+      "node_modules/etag/**/*",
+      "node_modules/on-finished/**/*",
+      "node_modules/ee-first/**/*",
+      "node_modules/escape-html/**/*",
+      "node_modules/encodeurl/**/*",
+      "node_modules/parseurl/**/*",
+      "node_modules/statuses/**/*",
+      "node_modules/destroy/**/*",
+      "node_modules/depd/**/*",
+      "node_modules/http-errors/**/*",
+      "node_modules/inherits/**/*",
+      "node_modules/setprototypeof/**/*",
+      "node_modules/toidentifier/**/*",
+      "node_modules/unpipe/**/*",
+      "node_modules/utils-merge/**/*",
+      "node_modules/cookie/**/*",
+      "node_modules/cookie-signature/**/*",
+      "node_modules/path-to-regexp/**/*",
+      "node_modules/proxy-addr/**/*",
+      "node_modules/forwarded/**/*",
+      "node_modules/ipaddr.js/**/*",
+      "node_modules/qs/**/*",
+      "node_modules/raw-body/**/*",
+      "node_modules/bytes/**/*",
+      "node_modules/iconv-lite/**/*",
+      "node_modules/safer-buffer/**/*",
+      "node_modules/content-type/**/*",
+      "node_modules/content-disposition/**/*",
+      "node_modules/type-is/**/*",
+      "node_modules/media-typer/**/*",
+      "node_modules/merge-descriptors/**/*",
+      "node_modules/methods/**/*",
+      "node_modules/finalhandler/**/*",
+      "node_modules/accepts/**/*",
+      "node_modules/negotiator/**/*",
+      "node_modules/vary/**/*",
+      "node_modules/safe-buffer/**/*",
+      "node_modules/body-parser/**/*",
+      "node_modules/object-inspect/**/*",
+      "node_modules/side-channel/**/*",
+      "node_modules/call-bind/**/*",
+      "node_modules/get-intrinsic/**/*",
+      "node_modules/function-bind/**/*",
+      "node_modules/has-proto/**/*",
+      "node_modules/has-symbols/**/*",
+      "node_modules/hasown/**/*",
+      "node_modules/ms/**/*",
+      "node_modules/debug/**/*"
+    ],
+    "win": {
+      "target": "portable",
+      "sign": false
+    },
+    "linux": {
+      "target": "AppImage",
+      "category": "Utility"
+    },
+    "portable": {
+      "artifactName": "CodaSacra.exe"
+    }
+  }
+}
