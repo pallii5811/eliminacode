@@ -1,5 +1,5 @@
 {
-  "name": "codasacra",
+  "name": "eliminacode",
   "private": true,
   "version": "1.0.0",
   "main": "electron/main.js",
@@ -33,8 +33,8 @@
     "vite": "^5.0.0"
   },
   "build": {
-    "appId": "com.codasacra.app",
-    "productName": "CodaSacra",
+    "appId": "com.eliminacode.app",
+    "productName": "EliminaCode",
     "directories": {
       "output": "release"
     },
@@ -106,7 +106,7 @@
       "category": "Utility"
     },
     "portable": {
-      "artifactName": "CodaSacra.exe"
+      "artifactName": "EliminaCode.exe"
     }
   }
 }

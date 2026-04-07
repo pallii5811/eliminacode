@@ -116,7 +116,7 @@ export default function DisplayPage() {
             <span className="text-xl">✝</span>
           </div>
           <div>
-            <h1 className="text-base font-bold text-white sm:text-lg">CodaSacra</h1>
+            <h1 className="text-base font-bold text-white sm:text-lg">EliminaCode</h1>
             <p className="text-[10px] text-white/40 capitalize">{dateFormatted}</p>
           </div>
         </div>

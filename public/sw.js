@@ -1,4 +1,4 @@
-const CACHE_NAME = 'codasacra-v1';
+const CACHE_NAME = 'eliminacode-v1';
 const OFFLINE_URL = '/';
 
 const PRECACHE_URLS = [

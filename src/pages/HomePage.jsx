@@ -56,7 +56,7 @@ export default function HomePage() {
             <span className="text-3xl">✝</span>
           </div>
           <h1 className="mb-3 text-3xl font-black text-gray-900 sm:text-4xl">
-            CodaSacra
+            EliminaCode
           </h1>
           <p className="mx-auto max-w-md text-base text-gray-500">
             Sistema elimina-code digitale per confessionali.

@@ -5,7 +5,7 @@ import ConfessionalSelector from '../components/ConfessionalSelector';
 import TicketCard from '../components/TicketCard';
 import { useQueueState } from '../hooks/useQueueState';
 
-const MY_TICKET_KEY = 'codasacra_my_ticket';
+const MY_TICKET_KEY = 'eliminacode_my_ticket';
 
 function loadMyTicket() {
   try {

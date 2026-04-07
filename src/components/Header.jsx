@@ -23,7 +23,7 @@ export default function Header({ title, showBack = false, showNav = true, minima
           ) : (
             <div className="w-10" />
           )}
-          <h1 className="text-sm font-bold text-sacred-900">{title || 'CodaSacra'}</h1>
+          <h1 className="text-sm font-bold text-sacred-900">{title || 'EliminaCode'}</h1>
           {isDemo && (
             <span className="rounded-full bg-gold-100 px-2 py-0.5 text-[10px] font-bold text-gold-700">
               DEMO
@@ -42,7 +42,7 @@ export default function Header({ title, showBack = false, showNav = true, minima
           <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-sacred-600 text-white">
             <span className="text-lg">✝</span>
           </div>
-          <span className="text-base font-bold text-sacred-900">CodaSacra</span>
+          <span className="text-base font-bold text-sacred-900">EliminaCode</span>
         </Link>
 
         {showNav && (

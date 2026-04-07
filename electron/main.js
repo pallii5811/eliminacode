@@ -8,7 +8,7 @@ const isDev = process.argv.includes('--dev');
 const PORT = 3000;
 
 // Determina quale modulo aprire da argomento CLI
-// Uso: codasacra.exe --mode=display | --mode=operatore | --mode=ticket
+// Uso: eliminacode.exe --mode=display | --mode=operatore | --mode=ticket
 function getStartMode() {
   const modeArg = process.argv.find(a => a.startsWith('--mode='));
   if (modeArg) return modeArg.split('=')[1];
@@ -45,8 +45,19 @@ function startLocalServer() {
         res.sendFile(path.join(distPath, 'index.html'));
       });
 
-      const server = expressApp.listen(PORT, '127.0.0.1', () => {
-        console.log(`CodaSacra server running on http://127.0.0.1:${PORT}`);
+      const server = expressApp.listen(PORT, '0.0.0.0', () => {
+        const { networkInterfaces } = require('os');
+        const nets = networkInterfaces();
+        let localIP = '127.0.0.1';
+        for (const name of Object.keys(nets)) {
+          for (const net of nets[name]) {
+            if (net.family === 'IPv4' && !net.internal) {
+              localIP = net.address;
+            }
+          }
+        }
+        console.log(`EliminaCode server running on http://localhost:${PORT}`);
+        console.log(`Rete locale (telefoni): http://${localIP}:${PORT}/ticket`);
         resolve();
       });
 
@@ -72,7 +83,7 @@ function createWindow(mode) {
   const windowConfig = {
     width: isDisplay ? width : isLauncher ? 600 : 480,
     height: isDisplay ? height : isLauncher ? 500 : 800,
-    title: 'CodaSacra',
+    title: 'EliminaCode',
     icon: path.join(__dirname, '..', 'public', 'icon.svg'),
     autoHideMenuBar: true,
     fullscreen: isDisplay,

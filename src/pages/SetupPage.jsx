@@ -7,7 +7,7 @@ const STEPS = [
     title: '1. Crea progetto Supabase',
     icon: Database,
     content: `1. Vai su https://supabase.com e crea un account gratuito
-2. Clicca "New Project" e scegli un nome (es. "codasacra")
+2. Clicca "New Project" e scegli un nome (es. "eliminacode")
 3. Scegli una password per il database (salvala!)
 4. Regione: seleziona "Central EU (Frankfurt)" per bassa latenza
 5. Attendi 2-3 minuti che il progetto sia pronto`,

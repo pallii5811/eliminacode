@@ -183,7 +183,7 @@ export const api = {
     if (isDemo) return demoStore.subscribe(callback);
 
     const channel = supabase
-      .channel('codasacra-realtime')
+      .channel('eliminacode-realtime')
       .on('postgres_changes', { event: '*', schema: 'public', table: 'tickets' }, callback)
       .on('postgres_changes', { event: '*', schema: 'public', table: 'confessionals' }, callback)
       .subscribe();

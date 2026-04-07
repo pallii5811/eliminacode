@@ -1,4 +1,4 @@
-const STORAGE_KEY = 'codasacra_demo';
+const STORAGE_KEY = 'eliminacode_demo';
 
 function loadState() {
   try {

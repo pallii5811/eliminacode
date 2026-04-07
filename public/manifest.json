@@ -1,7 +1,7 @@
 {
-  "name": "CodaSacra",
-  "short_name": "CodaSacra",
-  "description": "Sistema elimina-code digitale per confessionali",
+  "name": "EliminaCode",
+  "short_name": "EliminaCode",
+  "description": "Sistema elimina-code digitale per eventi",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#ffffff",
