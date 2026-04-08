@@ -30,6 +30,12 @@ export default function OperatorPage() {
   const [showResetConfirm, setShowResetConfirm] = useState(false);
 
   useEffect(() => {
+    if (!selectedConf && confessionals.length === 1) {
+      setSelectedConf(confessionals[0]);
+    }
+  }, [confessionals, selectedConf]);
+
+  useEffect(() => {
     api.getStats().then(setStats).catch(() => {});
     const interval = setInterval(() => {
       api.getStats().then(setStats).catch(() => {});

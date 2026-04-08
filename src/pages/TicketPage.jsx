@@ -54,6 +54,8 @@ export default function TicketPage() {
       setMyTicket(saved);
       const conf = confessionals.find(c => c.id === saved.confessional_id);
       if (conf) setSelectedConf(conf);
+    } else if (confessionals.length === 1) {
+      setSelectedConf(confessionals[0]);
     }
     loadedRef.current = true;
   }, [confessionals]);
@@ -210,13 +212,15 @@ export default function TicketPage() {
           </div>
         ) : (
           <div className="animate-slide-up">
-            <button
-              onClick={() => setSelectedConf(null)}
-              className="mb-6 flex items-center gap-1.5 text-sm font-medium text-gray-500 hover:text-gray-700 transition-colors"
-            >
-              <ArrowLeft size={14} />
-              Cambia confessionale
-            </button>
+            {confessionals.length > 1 && (
+              <button
+                onClick={() => setSelectedConf(null)}
+                className="mb-6 flex items-center gap-1.5 text-sm font-medium text-gray-500 hover:text-gray-700 transition-colors"
+              >
+                <ArrowLeft size={14} />
+                Cambia confessionale
+              </button>
+            )}
 
             <div className="card text-center">
               <div className="mb-2">
