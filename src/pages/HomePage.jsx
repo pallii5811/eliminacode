@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { Monitor, Settings, Ticket, BookOpen, Smartphone, Wifi, Shield } from 'lucide-react';
+import { Monitor, Settings, Ticket } from 'lucide-react';
 import { QRCodeSVG } from 'qrcode.react';
 import Header from '../components/Header';
 import { isDemo } from '../lib/supabase';
@@ -34,11 +34,6 @@ const MODULES = [
   },
 ];
 
-const FEATURES = [
-  { icon: Smartphone, title: 'PWA Installabile', desc: 'Funziona come un\'app nativa' },
-  { icon: Wifi, title: 'Tempo Reale', desc: 'Aggiornamenti istantanei via WebSocket' },
-  { icon: Shield, title: 'GDPR Safe', desc: 'Nessun dato personale raccolto' },
-];
 
 export default function HomePage() {
   const ticketUrl = typeof window !== 'undefined'
@@ -120,31 +115,7 @@ export default function HomePage() {
           </p>
         </div>
 
-        {/* Features */}
-        <div className="grid gap-4 sm:grid-cols-3">
-          {FEATURES.map((f, i) => (
-            <div key={i} className="flex items-start gap-3 rounded-xl p-4">
-              <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-sacred-100">
-                <f.icon size={16} className="text-sacred-600" />
-              </div>
-              <div>
-                <h4 className="text-sm font-semibold text-gray-900">{f.title}</h4>
-                <p className="text-xs text-gray-500">{f.desc}</p>
-              </div>
-            </div>
-          ))}
-        </div>
 
-        {/* Setup Link */}
-        <div className="mt-12 text-center">
-          <Link
-            to="/setup"
-            className="inline-flex items-center gap-2 text-xs font-medium text-gray-400 hover:text-sacred-600 transition-colors"
-          >
-            <BookOpen size={14} />
-            Guida Setup Supabase + Deploy Vercel
-          </Link>
-        </div>
       </main>
     </div>
   );
