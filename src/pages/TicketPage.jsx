@@ -1,7 +1,6 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
-import { Ticket as TicketIcon, ArrowLeft, RefreshCw, BookOpen, X } from 'lucide-react';
+import { Ticket as TicketIcon, RefreshCw, BookOpen, X } from 'lucide-react';
 import Header from '../components/Header';
-import ConfessionalSelector from '../components/ConfessionalSelector';
 import TicketCard from '../components/TicketCard';
 import { useQueueState } from '../hooks/useQueueState';
 import { useBookingState } from '../hooks/useBookingState';
@@ -43,22 +42,20 @@ export default function TicketPage() {
   } = useQueueState();
   const { settings, loading: bookingLoading } = useBookingState();
 
-  const [selectedConf, setSelectedConf] = useState(null);
   const [myTicket, setMyTicket] = useState(null);
   const [taking, setTaking] = useState(false);
   const [wasCalled, setWasCalled] = useState(false);
   const [showReminder, setShowReminder] = useState(false);
+  const [step, setStep] = useState('landing');
   const loadedRef = useRef(false);
+
+  const selectedConf = confessionals.length > 0 ? confessionals[0] : null;
 
   useEffect(() => {
     if (loadedRef.current || confessionals.length === 0) return;
     const saved = loadMyTicket();
     if (saved) {
       setMyTicket(saved);
-      const conf = confessionals.find(c => c.id === saved.confessional_id);
-      if (conf) setSelectedConf(conf);
-    } else if (confessionals.length === 1) {
-      setSelectedConf(confessionals[0]);
     }
     loadedRef.current = true;
   }, [confessionals]);
@@ -82,8 +79,8 @@ export default function TicketPage() {
       setTimeout(() => {
         clearMyTicket();
         setMyTicket(null);
-        setSelectedConf(null);
         setWasCalled(false);
+        setStep('landing');
       }, 5000);
     }
   }, [myTicket, tickets, wasCalled]);
@@ -106,8 +103,8 @@ export default function TicketPage() {
   const handleNewTicket = () => {
     clearMyTicket();
     setMyTicket(null);
-    setSelectedConf(null);
     setWasCalled(false);
+    setStep('landing');
   };
 
   if (loading || bookingLoading) {
@@ -279,77 +276,80 @@ export default function TicketPage() {
     );
   }
 
+  if (step === 'landing') {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-sacred-50 via-white to-gold-50/30">
+        <Header title="Prendi Numero" showBack minimal />
+
+        <main className="mx-auto max-w-lg px-4 pt-24 pb-12">
+          <div className="animate-fade-in">
+            <div className="card overflow-hidden">
+              <div className="flex items-start gap-4 rounded-2xl bg-gradient-to-br from-amber-50 to-orange-50 p-5 ring-1 ring-amber-200/50">
+                <div className="flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-amber-500 to-orange-500 text-white shadow-lg shadow-amber-500/30">
+                  <TicketIcon size={22} />
+                </div>
+                <div>
+                  <div className="mb-1 flex items-center gap-2">
+                    <h2 className="text-lg font-black text-gray-900">Prendi Numero</h2>
+                    <span className="rounded-full bg-amber-100 px-2 py-0.5 text-[10px] font-bold text-amber-700 uppercase">Fedeli</span>
+                  </div>
+                  <p className="text-sm leading-relaxed text-gray-600">
+                    Per i fedeli — prendi il tuo numero e monitora la coda in tempo reale
+                  </p>
+                </div>
+              </div>
+
+              <div className="mt-5 space-y-3 text-sm text-gray-500">
+                <p><strong className="text-gray-700">1.</strong> Premi il pulsante qui sotto per prenotare il tuo posto in coda.</p>
+                <p><strong className="text-gray-700">2.</strong> Riceverai un numero di prenotazione da conservare.</p>
+                <p><strong className="text-gray-700">3.</strong> Quando sarà il tuo turno, verrai chiamato sul display.</p>
+              </div>
+
+              <button
+                onClick={() => setStep('booking')}
+                className="btn-gold w-full mt-6 py-4 text-base"
+              >
+                <TicketIcon size={18} />
+                Prenotati Ora
+              </button>
+            </div>
+          </div>
+        </main>
+      </div>
+    );
+  }
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-sacred-50 via-white to-gold-50/30">
       <Header title="Prendi il tuo numero" showBack minimal />
 
-      <main className="mx-auto max-w-2xl px-4 pt-24 pb-12">
-        {!selectedConf ? (
-          <div className="animate-fade-in">
-            <div className="mb-8 text-center">
-              <div className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-2xl bg-gold-100">
-                <TicketIcon className="h-7 w-7 text-gold-600" />
-              </div>
-              <h2 className="mb-1 text-xl font-bold text-gray-900">Scegli il Confessionale</h2>
-              <p className="text-sm text-gray-500">
-                Seleziona il confessionale e prendi il tuo numero
-              </p>
+      <main className="mx-auto max-w-lg px-4 pt-24 pb-12">
+        <div className="animate-slide-up">
+          <div className="card text-center">
+            <div className="my-4 rounded-xl bg-gray-50 p-4">
+              <p className="text-xs text-gray-400 mb-1">Persone in attesa</p>
+              <p className="text-3xl font-black text-gray-700">{selectedConf ? getWaitingCount(selectedConf.id) : 0}</p>
+              {selectedConf && getWaitingCount(selectedConf.id) > 0 && (
+                <p className="text-xs text-gray-400 mt-1">
+                  Attesa stimata: ~{getWaitingCount(selectedConf.id) * 5} minuti
+                </p>
+              )}
             </div>
 
-            <ConfessionalSelector
-              confessionals={confessionals}
-              selectedId={null}
-              onSelect={setSelectedConf}
-              waitingCounts={Object.fromEntries(confessionals.map(c => [c.id, getWaitingCount(c.id)]))}
-            />
+            <button
+              onClick={handleTakeTicket}
+              disabled={taking || !selectedConf}
+              className="btn-gold w-full py-4 text-base"
+            >
+              {taking ? (
+                <RefreshCw size={18} className="animate-spin" />
+              ) : (
+                <TicketIcon size={18} />
+              )}
+              {taking ? 'Prenotazione in corso...' : 'Prendi il tuo Numero'}
+            </button>
           </div>
-        ) : (
-          <div className="animate-slide-up">
-            {confessionals.length > 1 && (
-              <button
-                onClick={() => setSelectedConf(null)}
-                className="mb-6 flex items-center gap-1.5 text-sm font-medium text-gray-500 hover:text-gray-700 transition-colors"
-              >
-                <ArrowLeft size={14} />
-                Cambia confessionale
-              </button>
-            )}
-
-            <div className="card text-center">
-              <div className="mb-2">
-                <span className="inline-flex items-center gap-2 rounded-full bg-sacred-100 px-4 py-1.5">
-                  <span className="flex h-6 w-6 items-center justify-center rounded-md bg-sacred-600 text-xs font-bold text-white">
-                    {selectedConf.code}
-                  </span>
-                  <span className="text-sm font-semibold text-sacred-700">{selectedConf.name}</span>
-                </span>
-              </div>
-
-              <div className="my-6 rounded-xl bg-gray-50 p-4">
-                <p className="text-xs text-gray-400 mb-1">Persone in attesa</p>
-                <p className="text-3xl font-black text-gray-700">{getWaitingCount(selectedConf.id)}</p>
-                {getWaitingCount(selectedConf.id) > 0 && (
-                  <p className="text-xs text-gray-400 mt-1">
-                    Attesa stimata: ~{getWaitingCount(selectedConf.id) * 5} minuti
-                  </p>
-                )}
-              </div>
-
-              <button
-                onClick={handleTakeTicket}
-                disabled={taking}
-                className="btn-gold w-full py-4 text-base"
-              >
-                {taking ? (
-                  <RefreshCw size={18} className="animate-spin" />
-                ) : (
-                  <TicketIcon size={18} />
-                )}
-                {taking ? 'Creazione ticket...' : 'Prendi il tuo Numero'}
-              </button>
-            </div>
-          </div>
-        )}
+        </div>
       </main>
     </div>
   );
