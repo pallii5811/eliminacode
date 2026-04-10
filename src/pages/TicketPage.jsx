@@ -4,6 +4,7 @@ import Header from '../components/Header';
 import ConfessionalSelector from '../components/ConfessionalSelector';
 import TicketCard from '../components/TicketCard';
 import { useQueueState } from '../hooks/useQueueState';
+import { useBookingState } from '../hooks/useBookingState';
 
 const MY_TICKET_KEY = 'eliminacode_my_ticket';
 
@@ -40,6 +41,7 @@ export default function TicketPage() {
     confessionals, tickets, loading,
     takeTicket, getWaitingCount, getTicketPosition, getEstimatedWait,
   } = useQueueState();
+  const { settings, loading: bookingLoading } = useBookingState();
 
   const [selectedConf, setSelectedConf] = useState(null);
   const [myTicket, setMyTicket] = useState(null);
@@ -107,7 +109,7 @@ export default function TicketPage() {
     setWasCalled(false);
   };
 
-  if (loading) {
+  if (loading || bookingLoading) {
     return (
       <div className="flex min-h-screen items-center justify-center bg-gradient-to-br from-sacred-50 via-white to-gold-50/30">
         <div className="h-10 w-10 animate-spin rounded-full border-4 border-sacred-200 border-t-sacred-600" />
@@ -180,6 +182,25 @@ export default function TicketPage() {
             <button onClick={handleNewTicket} className="btn-primary">
               Nuovo Ticket
             </button>
+          </div>
+        </main>
+      </div>
+    );
+  }
+
+  if (!settings.enabled) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-sacred-50 via-white to-gold-50/30">
+        <Header title="Prenotazioni chiuse" showBack minimal />
+        <main className="mx-auto max-w-lg px-4 pt-24 pb-12">
+          <div className="card text-center animate-fade-in">
+            <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-2xl bg-gold-100">
+              <TicketIcon className="h-8 w-8 text-gold-600" />
+            </div>
+            <h2 className="mb-3 text-2xl font-black text-gray-900">Prenotazioni non ancora attive</h2>
+            <p className="mx-auto max-w-md text-sm leading-relaxed text-gray-500">
+              {settings.closedMessage}
+            </p>
           </div>
         </main>
       </div>

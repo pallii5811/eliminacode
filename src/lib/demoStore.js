@@ -1,4 +1,9 @@
 const STORAGE_KEY = 'eliminacode_demo';
+const DEFAULT_BOOKING_SETTINGS = {
+  enabled: true,
+  closedMessage: 'Le prenotazioni non sono ancora attive. Riprova più tardi.',
+  available: true,
+};
 
 function loadState() {
   try {
@@ -33,12 +38,13 @@ class DemoStore {
     ];
 
     this.tickets = saved?.tickets || [];
+    this.bookingSettings = saved?.bookingSettings || { ...DEFAULT_BOOKING_SETTINGS };
     this.listeners = new Set();
     this._persist();
   }
 
   _persist() {
-    saveState({ confessionals: this.confessionals, tickets: this.tickets });
+    saveState({ confessionals: this.confessionals, tickets: this.tickets, bookingSettings: this.bookingSettings });
   }
 
   subscribe(callback) {
@@ -67,7 +73,27 @@ class DemoStore {
     return [...this.tickets].sort((a, b) => a.ticket_number - b.ticket_number);
   }
 
+  getBookingSettings() {
+    return { ...this.bookingSettings, available: true };
+  }
+
+  updateBookingSettings(updates) {
+    this.bookingSettings = {
+      enabled: typeof updates.enabled === 'boolean' ? updates.enabled : this.bookingSettings.enabled,
+      closedMessage: typeof updates.closedMessage === 'string' && updates.closedMessage.trim()
+        ? updates.closedMessage.trim()
+        : this.bookingSettings.closedMessage,
+      available: true,
+    };
+    this._notify();
+    return { ...this.bookingSettings };
+  }
+
   takeTicket(confessionalId) {
+    if (!this.bookingSettings.enabled) {
+      throw new Error(this.bookingSettings.closedMessage);
+    }
+
     const confTickets = this.tickets.filter(t => t.confessional_id === confessionalId);
     const maxNum = confTickets.length > 0
       ? Math.max(...confTickets.map(t => t.ticket_number))

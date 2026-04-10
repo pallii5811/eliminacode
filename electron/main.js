@@ -8,7 +8,7 @@ const isDev = process.argv.includes('--dev');
 const PORT = 3000;
 
 // Determina quale modulo aprire da argomento CLI
-// Uso: eliminacode.exe --mode=display | --mode=operatore | --mode=ticket
+// Uso: eliminacode.exe --mode=display | --mode=operatore | --mode=ticket | --mode=admin
 function getStartMode() {
   const modeArg = process.argv.find(a => a.startsWith('--mode='));
   if (modeArg) return modeArg.split('=')[1];
@@ -21,6 +21,7 @@ function getURLForMode(mode) {
     case 'display': return `${base}/display`;
     case 'operatore': return `${base}/operatore`;
     case 'ticket': return `${base}/ticket`;
+    case 'admin': return `${base}/admin`;
     default: return base;
   }
 }
@@ -82,7 +83,7 @@ function createWindow(mode) {
 
   const windowConfig = {
     width: isDisplay ? width : isLauncher ? 600 : 480,
-    height: isDisplay ? height : isLauncher ? 500 : 800,
+    height: isDisplay ? height : isLauncher ? 620 : 800,
     title: 'EliminaCode',
     icon: path.join(__dirname, '..', 'public', 'icon.svg'),
     autoHideMenuBar: true,

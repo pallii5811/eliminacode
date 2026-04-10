@@ -1,121 +1,47 @@
-import { Link } from 'react-router-dom';
-import { Monitor, Settings, Ticket } from 'lucide-react';
 import { QRCodeSVG } from 'qrcode.react';
-import Header from '../components/Header';
-import { isDemo } from '../lib/supabase';
 
-const MODULES = [
-  {
-    path: '/ticket',
-    title: 'Prendi Numero',
-    description: 'Per i fedeli — prendi il tuo numero e monitora la coda in tempo reale',
-    icon: Ticket,
-    color: 'from-gold-500 to-gold-600',
-    shadow: 'shadow-gold-500/20',
-    badge: 'Fedeli',
-  },
-  {
-    path: '/operatore',
-    title: 'Pannello Operatore',
-    description: 'Per il sacerdote — chiama il prossimo numero, gestisci la coda',
-    icon: Settings,
-    color: 'from-sacred-600 to-sacred-700',
-    shadow: 'shadow-sacred-600/20',
-    badge: 'Operatore',
-  },
-  {
-    path: '/display',
-    title: 'Display Pubblico',
-    description: 'Per TV/proiettore — mostra il numero corrente con annuncio vocale',
-    icon: Monitor,
-    color: 'from-gray-800 to-gray-900',
-    shadow: 'shadow-gray-800/20',
-    badge: 'Display',
-  },
-];
-
+const PRODUCTION_URL = 'https://eliminacode.vercel.app/ticket';
 
 export default function HomePage() {
-  const ticketUrl = typeof window !== 'undefined'
-    ? `${window.location.origin}/ticket`
-    : '/ticket';
+  const ticketUrl = PRODUCTION_URL;
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-sacred-50 via-white to-gold-50/30">
-      <Header />
-
-      <main className="mx-auto max-w-5xl px-4 pt-24 pb-12 sm:pt-28">
-        {/* Hero */}
-        <div className="mb-12 text-center animate-fade-in">
+      <main className="mx-auto flex min-h-screen max-w-4xl items-center justify-center px-4 py-10">
+        <div className="w-full max-w-3xl text-center animate-fade-in">
           <div className="mb-4 inline-flex h-16 w-16 items-center justify-center rounded-2xl bg-sacred-600 text-white shadow-lg shadow-sacred-600/30">
             <span className="text-3xl">✝</span>
           </div>
-          <h1 className="mb-3 text-3xl font-black text-gray-900 sm:text-4xl">
-            EliminaCode
+          <h1 className="mb-3 text-4xl font-black text-gray-900 sm:text-5xl">
+            ConfessatiOra
           </h1>
-          <p className="mx-auto max-w-md text-base text-gray-500">
+          <p className="mx-auto max-w-xl text-base text-gray-500 sm:text-lg">
             Sistema elimina-code digitale per confessionali.
-            <br />
             Gestisci le code in tempo reale, senza carta.
           </p>
-
-          {isDemo && (
-            <div className="mt-4 inline-flex items-center gap-2 rounded-full bg-gold-100 px-4 py-2">
-              <span className="h-2 w-2 rounded-full bg-gold-500 animate-pulse" />
-              <span className="text-xs font-bold text-gold-700">
-                DEMO MODE — Funziona senza backend
-              </span>
+          <div className="mt-10 card mx-auto max-w-2xl text-center">
+            <h2 className="mb-2 text-lg font-bold text-gray-900">QR Code — Pagina Ticket</h2>
+            <p className="mb-6 text-sm text-gray-500">
+              Scansiona il QR code oppure apri direttamente il link per prenotare il ticket.
+            </p>
+            <div className="inline-flex rounded-3xl bg-white p-5 shadow-sm ring-1 ring-gray-100">
+              <QRCodeSVG
+                value={ticketUrl}
+                size={220}
+                level="H"
+                includeMargin={false}
+                bgColor="#ffffff"
+                fgColor="#4c1d95"
+              />
             </div>
-          )}
-        </div>
-
-        {/* Modules */}
-        <div className="mb-16 grid gap-4 sm:grid-cols-3">
-          {MODULES.map((mod, i) => (
-            <Link
-              key={mod.path}
-              to={mod.path}
-              className="group card-hover animate-slide-up"
-              style={{ animationDelay: `${i * 100}ms` }}
+            <a
+              href={ticketUrl}
+              className="mt-6 block break-all text-xl font-black text-sacred-700 underline decoration-sacred-300 underline-offset-4 sm:text-3xl"
             >
-              <div className={`mb-4 inline-flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-to-br ${mod.color} text-white shadow-lg ${mod.shadow} transition-transform group-hover:scale-110`}>
-                <mod.icon size={22} />
-              </div>
-              <div className="mb-1 flex items-center gap-2">
-                <h3 className="font-bold text-gray-900">{mod.title}</h3>
-                <span className="rounded-full bg-gray-100 px-2 py-0.5 text-[10px] font-semibold text-gray-500">
-                  {mod.badge}
-                </span>
-              </div>
-              <p className="text-sm text-gray-500 leading-relaxed">
-                {mod.description}
-              </p>
-            </Link>
-          ))}
-        </div>
-
-        {/* QR Code Section */}
-        <div className="mb-16 card text-center animate-fade-in">
-          <h2 className="mb-2 text-lg font-bold text-gray-900">QR Code — Pagina Ticket</h2>
-          <p className="mb-6 text-sm text-gray-500">
-            Stampa o proietta questo QR code per permettere ai fedeli di prendere il numero dal telefono
-          </p>
-          <div className="inline-flex rounded-2xl bg-white p-4 shadow-sm ring-1 ring-gray-100">
-            <QRCodeSVG
-              value={ticketUrl}
-              size={180}
-              level="H"
-              includeMargin={false}
-              bgColor="#ffffff"
-              fgColor="#4c1d95"
-            />
+              {ticketUrl}
+            </a>
           </div>
-          <p className="mt-4 rounded-lg bg-gray-50 px-4 py-2 font-mono text-xs text-gray-500 break-all">
-            {ticketUrl}
-          </p>
         </div>
-
-
       </main>
     </div>
   );

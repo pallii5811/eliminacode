@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
-import { Maximize, Volume2, VolumeX, Wifi, Play } from 'lucide-react';
+import { Link } from 'react-router-dom';
+import { Maximize, Volume2, VolumeX, Wifi, Play, Home } from 'lucide-react';
 import { useQueueState } from '../hooks/useQueueState';
 import { useVoice } from '../hooks/useVoice';
 import { useClock } from '../hooks/useClock';
@@ -112,9 +113,13 @@ export default function DisplayPage() {
       {/* Top Bar */}
       <header className="flex items-center justify-between px-6 py-4 sm:px-10 sm:py-6">
         <div className="flex items-center gap-3">
-          <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-white/10 text-white">
-            <span className="text-xl">✝</span>
-          </div>
+          <Link
+            to="/"
+            className="flex h-10 w-10 items-center justify-center rounded-xl bg-white/10 text-white hover:bg-white/20 transition-colors"
+            title="Torna alla Home"
+          >
+            <Home size={20} />
+          </Link>
           <div>
             <h1 className="text-base font-bold text-white sm:text-lg">EliminaCode</h1>
             <p className="text-[10px] text-white/40 capitalize">{dateFormatted}</p>

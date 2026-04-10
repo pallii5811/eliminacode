@@ -5,6 +5,11 @@ const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
 const supabaseKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
 
 export const isDemo = !supabaseUrl || !supabaseKey || supabaseUrl === '' || supabaseUrl === 'your-supabase-url';
+export const DEFAULT_BOOKING_SETTINGS = {
+  enabled: true,
+  closedMessage: 'Le prenotazioni non sono ancora attive. Riprova più tardi.',
+  available: true,
+};
 
 let supabase = null;
 if (!isDemo) {
@@ -14,6 +19,21 @@ if (!isDemo) {
 export { supabase };
 
 const todayFilter = () => new Date().toISOString().split('T')[0];
+
+function normalizeBookingSettings(value, available = true) {
+  return {
+    enabled: typeof value?.enabled === 'boolean' ? value.enabled : DEFAULT_BOOKING_SETTINGS.enabled,
+    closedMessage: typeof value?.closedMessage === 'string' && value.closedMessage.trim()
+      ? value.closedMessage.trim()
+      : DEFAULT_BOOKING_SETTINGS.closedMessage,
+    available,
+  };
+}
+
+function isMissingSettingsTable(error) {
+  const text = `${error?.message || ''} ${error?.details || ''} ${error?.hint || ''}`;
+  return error?.code === 'PGRST205' || error?.code === '42P01' || /app_settings/i.test(text);
+}
 
 export const api = {
   async getConfessionals() {
@@ -50,8 +70,61 @@ export const api = {
     return data || [];
   },
 
+  async getBookingSettings() {
+    if (isDemo) return demoStore.getBookingSettings();
+    const { data, error } = await supabase
+      .from('app_settings')
+      .select('value')
+      .eq('key', 'booking')
+      .maybeSingle();
+
+    if (error) {
+      if (isMissingSettingsTable(error)) {
+        return normalizeBookingSettings(undefined, false);
+      }
+      throw error;
+    }
+
+    return normalizeBookingSettings(data?.value, true);
+  },
+
+  async updateBookingSettings(updates) {
+    if (isDemo) return demoStore.updateBookingSettings(updates);
+
+    const current = await api.getBookingSettings();
+    const nextValue = {
+      enabled: typeof updates.enabled === 'boolean' ? updates.enabled : current.enabled,
+      closedMessage: typeof updates.closedMessage === 'string' && updates.closedMessage.trim()
+        ? updates.closedMessage.trim()
+        : current.closedMessage,
+    };
+
+    const { error } = await supabase
+      .from('app_settings')
+      .upsert({
+        key: 'booking',
+        value: nextValue,
+        updated_at: new Date().toISOString(),
+      }, { onConflict: 'key' });
+
+    if (error) {
+      if (isMissingSettingsTable(error)) {
+        throw new Error('Manca la tabella app_settings su Supabase. Esegui lo SQL di configurazione prima di usare la pagina admin.');
+      }
+      throw error;
+    }
+
+    return normalizeBookingSettings(nextValue, true);
+  },
+
   async takeTicket(confessionalId) {
     if (isDemo) return demoStore.takeTicket(confessionalId);
+
+    const bookingSettings = await api.getBookingSettings();
+    if (!bookingSettings.enabled) {
+      throw new Error(bookingSettings.closedMessage);
+    }
+
     const { data, error } = await supabase.rpc('take_ticket', { conf_id: confessionalId });
     if (error) throw error;
     return data;
@@ -186,6 +259,7 @@ export const api = {
       .channel('eliminacode-realtime')
       .on('postgres_changes', { event: '*', schema: 'public', table: 'tickets' }, callback)
       .on('postgres_changes', { event: '*', schema: 'public', table: 'confessionals' }, callback)
+      .on('postgres_changes', { event: '*', schema: 'public', table: 'app_settings' }, callback)
       .subscribe();
 
     return () => supabase.removeChannel(channel);
