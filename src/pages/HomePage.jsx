@@ -1,6 +1,6 @@
 import { QRCodeSVG } from 'qrcode.react';
 
-const PRODUCTION_URL = 'https://eliminacode.vercel.app/ticket';
+const PRODUCTION_URL = 'https://eliminacode-five.vercel.app/ticket';
 
 export default function HomePage() {
   const ticketUrl = PRODUCTION_URL;
