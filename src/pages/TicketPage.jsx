@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
-import { Ticket as TicketIcon, ArrowLeft, RefreshCw } from 'lucide-react';
+import { Ticket as TicketIcon, ArrowLeft, RefreshCw, BookOpen, X } from 'lucide-react';
 import Header from '../components/Header';
 import ConfessionalSelector from '../components/ConfessionalSelector';
 import TicketCard from '../components/TicketCard';
@@ -47,6 +47,7 @@ export default function TicketPage() {
   const [myTicket, setMyTicket] = useState(null);
   const [taking, setTaking] = useState(false);
   const [wasCalled, setWasCalled] = useState(false);
+  const [showReminder, setShowReminder] = useState(false);
   const loadedRef = useRef(false);
 
   useEffect(() => {
@@ -151,13 +152,84 @@ export default function TicketPage() {
             </div>
           )}
 
-          <div className="mt-6 text-center">
+          <div className="mt-6">
+            <button
+              onClick={() => setShowReminder(true)}
+              className="btn-primary w-full justify-center py-4 text-base"
+            >
+              <BookOpen size={18} />
+              RICORDATI
+            </button>
+          </div>
+
+          <div className="mt-4 text-center">
             <button onClick={handleNewTicket} className="btn-secondary">
               <RefreshCw size={14} />
               Nuovo Ticket
             </button>
           </div>
         </main>
+
+        {showReminder && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 px-4" onClick={() => setShowReminder(false)}>
+            <div
+              className="relative max-h-[85vh] w-full max-w-lg overflow-y-auto rounded-3xl bg-white p-6 shadow-2xl animate-slide-up"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <button
+                onClick={() => setShowReminder(false)}
+                className="absolute right-4 top-4 flex h-8 w-8 items-center justify-center rounded-full bg-gray-100 text-gray-500 hover:bg-gray-200 transition-colors"
+              >
+                <X size={16} />
+              </button>
+
+              <div className="mb-4 flex items-center gap-3">
+                <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-sacred-100">
+                  <BookOpen className="h-5 w-5 text-sacred-600" />
+                </div>
+                <h2 className="text-lg font-black text-gray-900">Preparati alla Confessione</h2>
+              </div>
+
+              <div className="space-y-4 text-sm leading-relaxed text-gray-600">
+                <p>
+                  Confessarsi bene richiede preparazione spirituale interiore e sincerità, strutturandosi in cinque passaggi chiave: <strong>esame di coscienza</strong>, <strong>dolore dei peccati</strong>, <strong>proposito di non peccare più</strong>, <strong>confessione orale</strong> e <strong>penitenza</strong>. È fondamentale per te riflettere sulle tue azioni alla luce dei comandamenti, confessare con chiarezza i tuoi peccati mortali e affidarti con fiducia alla misericordia divina e a un riverente e riconosciuto "Timor di Dio".
+                </p>
+
+                <div>
+                  <h3 className="mb-1 font-bold text-gray-900">Preparati spiritualmente</h3>
+                  <p>Prima di andare in confessione, dedica del tempo alla preghiera e all'esame di coscienza. Chiedi a Dio di illuminare la tua mente e il tuo cuore per poter riconoscere i tuoi peccati con sincerità. Non chiacchierare, guardare il cellulare o altro che disturbi il tuo spirituale silenzio interiore.</p>
+                </div>
+
+                <div>
+                  <h3 className="mb-1 font-bold text-gray-900">Ecco i passi dettagliati per una buona confessione</h3>
+                  <ul className="mt-2 space-y-3">
+                    <li><strong>Esame di coscienza:</strong> Raccogliti in preghiera, chiedi aiuto allo Spirito Santo e rifletti sulle tue azioni, parole, pensieri e omissioni dall'ultima confessione. Puoi usare i Dieci Comandamenti, il Vangelo o le relazioni con Dio, il prossimo e te stesso come guida.</li>
+                    <li><strong>Dolore dei peccati:</strong> Prova un sincero dispiacere per aver offeso Dio, non per paura della punizione, ma per amore verso di Lui.</li>
+                    <li><strong>Proposito di non peccare più:</strong> Prendi la ferma decisione di evitare il peccato e le occasioni che vi portano (occasioni prossime).</li>
+                    <li><strong>Confessione dei peccati:</strong> Sii concreto, preciso e sintetico nel dire i tuoi peccati al sacerdote, distinguendo tra peccati veniali e mortali. Inizia col segno della croce e dicendo quanto tempo è passato dall'ultima volta.</li>
+                    <li><strong>Penitenza e assoluzione:</strong> Ascolta il sacerdote, accetta la penitenza (segno di riparazione) e recita l'atto di dolore. Dopo l'assoluzione, compi la penitenza il prima possibile.</li>
+                  </ul>
+                </div>
+
+                <div>
+                  <h3 className="mb-1 font-bold text-gray-900">Consigli utili</h3>
+                  <p>Non nascondere volontariamente peccati gravi, altrimenti la tua confessione è nulla. Se non ricordi un peccato veniale, non preoccuparti, viene perdonato comunque. La confessione non è un elenco di colpe, ma un dialogo di riconciliazione.</p>
+                </div>
+
+                <p className="font-medium text-sacred-700">
+                  L'essenziale è il tuo atteggiamento di sincero pentimento e il desiderio di conversione, per ricevere il perdono di Dio e rafforzare il tuo rapporto con Lui.
+                </p>
+              </div>
+
+              <button
+                onClick={() => setShowReminder(false)}
+                className="btn-primary mt-6 w-full justify-center py-3"
+              >
+                Ho capito
+              </button>
+            </div>
+          </div>
+        )}
       </div>
     );
   }

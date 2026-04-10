@@ -17,9 +17,9 @@ export default function Header({ title, showBack = false, showNav = true, minima
       <header className="fixed top-0 left-0 right-0 z-40 glass">
         <div className="mx-auto flex h-14 max-w-7xl items-center justify-between px-4">
           {showBack ? (
-            <Link to="/" className="btn-icon">
+            <button onClick={() => window.history.back()} className="btn-icon">
               <ChevronLeft size={20} />
-            </Link>
+            </button>
           ) : (
             <div className="w-10" />
           )}
