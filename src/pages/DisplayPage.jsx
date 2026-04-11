@@ -248,11 +248,11 @@ export default function DisplayPage() {
               <p className="text-4xl sm:text-6xl lg:text-7xl font-black text-white uppercase tracking-wider mb-4">
                 Prossimo Gruppo
               </p>
-              <div className="rounded-2xl bg-gradient-to-r from-amber-500 to-yellow-400 px-10 py-6 sm:px-16 sm:py-8 shadow-lg shadow-amber-500/20">
-                <p className="text-4xl sm:text-6xl lg:text-7xl font-black text-gray-900">
-                  da n° <span className="text-amber-900">{String(groupStart).padStart(3, '0')}</span>
-                  {' '}a n° <span className="text-amber-900">{String(groupEnd).padStart(3, '0')}</span>
+              <div className="rounded-2xl bg-gradient-to-r from-amber-500 to-yellow-400 px-4 py-4 sm:px-6 sm:py-5 shadow-lg shadow-amber-500/20 overflow-hidden">
+                <p className="text-5xl sm:text-7xl lg:text-[85px] font-[900] text-black whitespace-nowrap leading-tight">
+                  da n° {String(groupStart).padStart(3, '0')} a n° {String(groupEnd).padStart(3, '0')}
                 </p>
+                <p className="mt-1 text-2xl sm:text-4xl font-bold text-black">si preparino</p>
               </div>
             </div>
           );
