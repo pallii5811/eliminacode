@@ -4,7 +4,7 @@ import Header from '../components/Header';
 import { useBookingState } from '../hooks/useBookingState';
 
 const ADMIN_USER = 'admin';
-const ADMIN_PASS = 'ConfessaTiOra2025';
+const ADMIN_PASS = 'simona';
 
 const SETTINGS_SQL = `CREATE TABLE IF NOT EXISTS app_settings (
   key TEXT PRIMARY KEY,
