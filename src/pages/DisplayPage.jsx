@@ -160,7 +160,7 @@ export default function DisplayPage() {
       {/* Main Display */}
       <main className="flex flex-1 flex-col items-center justify-center px-6 pb-8 sm:px-10">
         <div className={`grid w-full max-w-6xl gap-6 ${
-          confessionals.length === 1 ? 'grid-cols-1 max-w-lg' :
+          confessionals.length === 1 ? 'grid-cols-1 max-w-3xl' :
           confessionals.length === 2 ? 'grid-cols-2 max-w-3xl' :
           'grid-cols-1 sm:grid-cols-3'
         }`}>
@@ -177,7 +177,7 @@ export default function DisplayPage() {
             return (
               <div
                 key={conf.id}
-                className={`confessional-display-card rounded-3xl p-6 sm:p-10 text-center transition-all duration-500 ${
+                className={`confessional-display-card rounded-3xl p-8 sm:p-14 text-center transition-all duration-500 ${
                   isFlashing ? 'flash' : ''
                 }`}
               >
@@ -185,7 +185,7 @@ export default function DisplayPage() {
                 <div className="mb-4 sm:mb-6">
                   <span className="inline-flex items-center gap-2 rounded-full bg-white/10 px-4 py-1.5">
                     <span className="h-2 w-2 rounded-full bg-sacred-400" />
-                    <span className="text-xs font-semibold text-white/80 uppercase tracking-wider">
+                    <span className="text-sm sm:text-base font-semibold text-white/80 uppercase tracking-wider">
                       {conf.name}
                     </span>
                   </span>
@@ -197,7 +197,7 @@ export default function DisplayPage() {
                   className={`my-6 sm:my-10 ${conf.current_number > 0 ? 'animate-number-pop' : ''}`}
                 >
                   <span
-                    className={`display-number text-7xl sm:text-8xl lg:text-9xl font-black ${
+                    className={`display-number text-[120px] sm:text-[160px] lg:text-[200px] leading-none font-black ${
                       conf.current_number > 0
                         ? 'text-gold-400 display-number-glow'
                         : 'text-white/20'
@@ -210,21 +210,21 @@ export default function DisplayPage() {
                 {/* Status */}
                 <div className="space-y-2">
                   {conf.current_number > 0 ? (
-                    <p className="text-sm font-medium text-green-400">
+                    <p className="text-base sm:text-lg font-medium text-green-400">
                       Ora in servizio
                     </p>
                   ) : (
-                    <p className="text-sm text-white/30">
+                    <p className="text-base sm:text-lg text-white/30">
                       In attesa di chiamata
                     </p>
                   )}
 
-                  <div className="flex items-center justify-center gap-4">
-                    <span className="text-xs text-white/40">
+                  <div className="flex items-center justify-center gap-6">
+                    <span className="text-sm sm:text-base text-white/40">
                       In coda: <strong className="text-white/70">{waitCount}</strong>
                     </span>
                     {nextTicket && (
-                      <span className="text-xs text-white/40">
+                      <span className="text-sm sm:text-base text-white/40">
                         Prossimo: <strong className="text-white/70">
                           {String(nextTicket.ticket_number).padStart(3, '0')}
                         </strong>
@@ -244,14 +244,14 @@ export default function DisplayPage() {
           const groupStart = currentNum + 1;
           const groupEnd = currentNum + 12;
           return (
-            <div className="mt-6 w-full max-w-2xl mx-auto rounded-2xl bg-gradient-to-r from-amber-500 to-yellow-400 px-6 py-4 sm:px-10 sm:py-5 text-center shadow-lg shadow-amber-500/20">
-              <p className="text-sm font-bold text-amber-900/70 uppercase tracking-wider mb-1">
+            <div className="mt-8 w-full max-w-3xl mx-auto rounded-2xl bg-gradient-to-r from-amber-500 to-yellow-400 px-8 py-6 sm:px-12 sm:py-8 text-center shadow-lg shadow-amber-500/20">
+              <p className="text-base sm:text-lg font-bold text-amber-900/70 uppercase tracking-wider mb-2">
                 Prossimo Gruppo
               </p>
-              <p className="text-2xl sm:text-3xl font-black text-gray-900">
+              <p className="text-3xl sm:text-5xl font-black text-gray-900">
                 da n° <span className="text-amber-900">{String(groupStart).padStart(3, '0')}</span>
                 {' '}a n° <span className="text-amber-900">{String(groupEnd).padStart(3, '0')}</span>
-                <span className="ml-2 text-lg sm:text-xl font-bold text-amber-900/80">si preparino</span>
+                <span className="ml-3 text-2xl sm:text-3xl font-bold text-amber-900/80">si preparino</span>
               </p>
             </div>
           );
