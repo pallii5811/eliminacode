@@ -210,21 +210,21 @@ export default function DisplayPage() {
                 {/* Status */}
                 <div className="space-y-2">
                   {conf.current_number > 0 ? (
-                    <p className="text-base sm:text-lg font-medium text-green-400">
+                    <p className="text-lg sm:text-2xl font-medium text-green-400">
                       Ora in servizio
                     </p>
                   ) : (
-                    <p className="text-base sm:text-lg text-white/30">
+                    <p className="text-lg sm:text-2xl text-white/30">
                       In attesa di chiamata
                     </p>
                   )}
 
-                  <div className="flex items-center justify-center gap-6">
-                    <span className="text-sm sm:text-base text-white/40">
+                  <div className="flex items-center justify-center gap-8">
+                    <span className="text-base sm:text-xl text-white/40">
                       In coda: <strong className="text-white/70">{waitCount}</strong>
                     </span>
                     {nextTicket && (
-                      <span className="text-sm sm:text-base text-white/40">
+                      <span className="text-base sm:text-xl text-white/40">
                         Prossimo: <strong className="text-white/70">
                           {String(nextTicket.ticket_number).padStart(3, '0')}
                         </strong>
@@ -244,15 +244,17 @@ export default function DisplayPage() {
           const groupStart = currentNum + 1;
           const groupEnd = currentNum + 12;
           return (
-            <div className="mt-8 w-full max-w-3xl mx-auto rounded-2xl bg-gradient-to-r from-amber-500 to-yellow-400 px-8 py-6 sm:px-12 sm:py-8 text-center shadow-lg shadow-amber-500/20">
-              <p className="text-base sm:text-lg font-bold text-amber-900/70 uppercase tracking-wider mb-2">
+            <div className="mt-8 w-full max-w-4xl mx-auto text-center">
+              <p className="text-4xl sm:text-6xl lg:text-7xl font-black text-white uppercase tracking-wider mb-4">
                 Prossimo Gruppo
               </p>
-              <p className="text-3xl sm:text-5xl font-black text-gray-900">
-                da n° <span className="text-amber-900">{String(groupStart).padStart(3, '0')}</span>
-                {' '}a n° <span className="text-amber-900">{String(groupEnd).padStart(3, '0')}</span>
-                <span className="ml-3 text-2xl sm:text-3xl font-bold text-amber-900/80">si preparino</span>
-              </p>
+              <div className="rounded-2xl bg-gradient-to-r from-amber-500 to-yellow-400 px-10 py-6 sm:px-16 sm:py-8 shadow-lg shadow-amber-500/20">
+                <p className="text-4xl sm:text-6xl lg:text-7xl font-black text-gray-900">
+                  da n° <span className="text-amber-900">{String(groupStart).padStart(3, '0')}</span>
+                  {' '}a n° <span className="text-amber-900">{String(groupEnd).padStart(3, '0')}</span>
+                </p>
+                <p className="mt-2 text-xl sm:text-3xl font-bold text-amber-900/80">si preparino</p>
+              </div>
             </div>
           );
         })()}
