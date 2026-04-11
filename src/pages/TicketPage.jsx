@@ -53,10 +53,6 @@ export default function TicketPage() {
 
   useEffect(() => {
     if (loadedRef.current || confessionals.length === 0) return;
-    const saved = loadMyTicket();
-    if (saved) {
-      setMyTicket(saved);
-    }
     loadedRef.current = true;
   }, [confessionals]);
 
@@ -303,6 +299,12 @@ export default function TicketPage() {
                 <p><strong className="text-gray-700">1.</strong> Premi il pulsante qui sotto per prenotare il tuo posto in coda.</p>
                 <p><strong className="text-gray-700">2.</strong> Riceverai un numero di prenotazione da conservare.</p>
                 <p><strong className="text-gray-700">3.</strong> Quando sarà il tuo turno, verrai chiamato sul display.</p>
+              </div>
+
+              <div className="mt-4 rounded-xl bg-amber-50 border border-amber-200 p-3 text-center">
+                <p className="text-sm font-semibold text-amber-800">
+                  ⏰ Prenotazioni disponibili solo il <strong>12 Aprile</strong> dalle <strong>7:00</strong> alle <strong>16:00</strong>
+                </p>
               </div>
 
               <button
