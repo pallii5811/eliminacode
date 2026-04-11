@@ -1,7 +1,10 @@
-import { useEffect, useMemo, useState } from 'react';
-import { AlertTriangle, CheckCircle2, Power, PowerOff, Save, Shield } from 'lucide-react';
+import { useEffect, useState } from 'react';
+import { AlertTriangle, CheckCircle2, Power, PowerOff, Save, Shield, LogIn } from 'lucide-react';
 import Header from '../components/Header';
 import { useBookingState } from '../hooks/useBookingState';
+
+const ADMIN_USER = 'admin';
+const ADMIN_PASS = 'ConfessaTiOra2025';
 
 const SETTINGS_SQL = `CREATE TABLE IF NOT EXISTS app_settings (
   key TEXT PRIMARY KEY,
@@ -31,15 +34,30 @@ export default function AdminPage() {
   const [message, setMessage] = useState('');
   const [saving, setSaving] = useState(false);
   const [notice, setNotice] = useState('');
+  const [authenticated, setAuthenticated] = useState(false);
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
+  const [loginError, setLoginError] = useState('');
 
-  const isLocalAdmin = useMemo(() => {
-    if (typeof window === 'undefined') return false;
-    return window.location.hostname === '127.0.0.1' || window.location.hostname === 'localhost';
+  useEffect(() => {
+    const saved = sessionStorage.getItem('admin_auth');
+    if (saved === '1') setAuthenticated(true);
   }, []);
 
   useEffect(() => {
     setMessage(settings.closedMessage || '');
   }, [settings.closedMessage]);
+
+  const handleLogin = (e) => {
+    e.preventDefault();
+    if (username === ADMIN_USER && password === ADMIN_PASS) {
+      setAuthenticated(true);
+      sessionStorage.setItem('admin_auth', '1');
+      setLoginError('');
+    } else {
+      setLoginError('Nome utente o password errati.');
+    }
+  };
 
   const handleToggle = async (enabled) => {
     setSaving(true);
@@ -67,19 +85,50 @@ export default function AdminPage() {
     }
   };
 
-  if (!isLocalAdmin) {
+  if (!authenticated) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-sacred-50 via-white to-sacred-50">
         <Header title="Admin Prenotazioni" showBack minimal />
-        <main className="mx-auto max-w-lg px-4 pt-24 pb-12">
-          <div className="card text-center">
-            <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-2xl bg-red-50">
-              <Shield className="h-8 w-8 text-red-500" />
+        <main className="mx-auto max-w-sm px-4 pt-24 pb-12">
+          <div className="card animate-fade-in">
+            <div className="mb-6 text-center">
+              <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-2xl bg-sacred-100">
+                <Shield className="h-8 w-8 text-sacred-600" />
+              </div>
+              <h2 className="text-xl font-bold text-gray-900">Accesso Admin</h2>
+              <p className="mt-1 text-sm text-gray-500">Inserisci le credenziali per accedere.</p>
             </div>
-            <h2 className="mb-2 text-xl font-bold text-gray-900">Pagina disponibile solo nell'EXE</h2>
-            <p className="text-sm text-gray-500">
-              L'attivazione delle prenotazioni può essere gestita solo dalla versione locale aperta dal cliente sul PC dell'evento.
-            </p>
+            <form onSubmit={handleLogin} className="space-y-4">
+              <div>
+                <label className="mb-1 block text-sm font-semibold text-gray-700">Nome utente</label>
+                <input
+                  type="text"
+                  value={username}
+                  onChange={(e) => setUsername(e.target.value)}
+                  className="w-full rounded-xl border border-gray-200 px-4 py-3 text-sm outline-none transition focus:border-sacred-300 focus:ring-4 focus:ring-sacred-100"
+                  placeholder="admin"
+                  autoComplete="username"
+                />
+              </div>
+              <div>
+                <label className="mb-1 block text-sm font-semibold text-gray-700">Password</label>
+                <input
+                  type="password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  className="w-full rounded-xl border border-gray-200 px-4 py-3 text-sm outline-none transition focus:border-sacred-300 focus:ring-4 focus:ring-sacred-100"
+                  placeholder="••••••••"
+                  autoComplete="current-password"
+                />
+              </div>
+              {loginError && (
+                <p className="text-sm font-medium text-red-600">{loginError}</p>
+              )}
+              <button type="submit" className="btn-primary w-full justify-center py-3">
+                <LogIn size={18} />
+                Accedi
+              </button>
+            </form>
           </div>
         </main>
       </div>

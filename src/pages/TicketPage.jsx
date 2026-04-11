@@ -303,7 +303,7 @@ export default function TicketPage() {
 
               <div className="mt-4 rounded-xl bg-amber-50 border border-amber-200 p-3 text-center">
                 <p className="text-sm font-semibold text-amber-800">
-                  ⏰ Prenotazioni disponibili solo il <strong>12 Aprile</strong> dalle <strong>7:00</strong> alle <strong>16:00</strong>
+                  ⏰ Prenotazioni disponibili solo il <strong>12 Aprile</strong> dalle <strong>8:00</strong> alle <strong>16:00</strong>
                 </p>
               </div>
 
