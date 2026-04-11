@@ -253,7 +253,6 @@ export default function DisplayPage() {
                   da n° <span className="text-amber-900">{String(groupStart).padStart(3, '0')}</span>
                   {' '}a n° <span className="text-amber-900">{String(groupEnd).padStart(3, '0')}</span>
                 </p>
-                <p className="mt-2 text-xl sm:text-3xl font-bold text-amber-900/80">si preparino</p>
               </div>
             </div>
           );
