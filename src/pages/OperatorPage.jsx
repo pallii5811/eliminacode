@@ -1,10 +1,10 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
 import {
   PhoneForwarded, SkipForward, CheckCircle2, RotateCcw,
-  Volume2, Users, Clock, BarChart3, AlertTriangle, LogOut, RefreshCw
+  Volume2, Users, Clock, BarChart3, AlertTriangle, LogOut, RefreshCw,
+  Lock, LogIn as LogInIcon
 } from 'lucide-react';
 import Header from '../components/Header';
-import PinLogin from '../components/PinLogin';
 import ConfessionalSelector from '../components/ConfessionalSelector';
 import QueueList from '../components/QueueList';
 import { useQueueState } from '../hooks/useQueueState';
@@ -12,6 +12,7 @@ import { useVoice } from '../hooks/useVoice';
 import { api } from '../lib/supabase';
 
 const TIMEOUT_MINUTES = 10;
+const DASHBOARD_PASS = 'confessatiora123';
 
 export default function OperatorPage() {
   const {
@@ -28,6 +29,8 @@ export default function OperatorPage() {
   const [timer, setTimer] = useState(0);
   const timerRef = useRef(null);
   const [showResetConfirm, setShowResetConfirm] = useState(false);
+  const [passInput, setPassInput] = useState('');
+  const [loginError, setLoginError] = useState('');
 
   useEffect(() => {
     if (!selectedConf && confessionals.length === 1) {
@@ -102,11 +105,15 @@ export default function OperatorPage() {
     setShowResetConfirm(false);
   }, [resetAll]);
 
-  const handlePinVerify = useCallback(async (pin) => {
-    const valid = await api.verifyPin(selectedConf.id, pin);
-    if (valid) setAuthenticated(true);
-    return valid;
-  }, [selectedConf]);
+  const handlePasswordLogin = (e) => {
+    e.preventDefault();
+    if (passInput === DASHBOARD_PASS) {
+      setAuthenticated(true);
+      setLoginError('');
+    } else {
+      setLoginError('Password errata.');
+    }
+  };
 
   const handleLogout = () => {
     setAuthenticated(false);
@@ -148,7 +155,7 @@ export default function OperatorPage() {
   if (!selectedConf) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-sacred-50 via-white to-sacred-50">
-        <Header title="Pannello Operatore" showBack minimal />
+        <Header title="Dashboard" showBack minimal />
         <main className="mx-auto max-w-2xl px-4 pt-20 pb-12">
           <div className="mb-6 text-center animate-fade-in">
             <h2 className="text-xl font-bold text-gray-900">Seleziona Confessionale</h2>
@@ -167,11 +174,41 @@ export default function OperatorPage() {
 
   if (!authenticated) {
     return (
-      <PinLogin
-        confessionalName={selectedConf.name}
-        onSuccess={handlePinVerify}
-        onBack={() => setSelectedConf(null)}
-      />
+      <div className="flex min-h-screen items-center justify-center bg-gradient-to-br from-sacred-50 via-white to-sacred-50 p-4">
+        <div className="w-full max-w-sm animate-fade-in">
+          <div className="card text-center">
+            <div className="mx-auto mb-6 flex h-16 w-16 items-center justify-center rounded-2xl bg-sacred-100">
+              <Lock className="h-8 w-8 text-sacred-600" />
+            </div>
+            <h2 className="mb-1 text-xl font-bold text-gray-900">Accesso Dashboard</h2>
+            <p className="mb-6 text-sm text-gray-500">{selectedConf.name}</p>
+            <form onSubmit={handlePasswordLogin} className="space-y-4 text-left">
+              <div>
+                <label className="mb-1 block text-sm font-semibold text-gray-700">Password</label>
+                <input
+                  type="password"
+                  value={passInput}
+                  onChange={(e) => setPassInput(e.target.value)}
+                  className="w-full rounded-xl border border-gray-200 px-4 py-3 text-sm outline-none transition focus:border-sacred-300 focus:ring-4 focus:ring-sacred-100"
+                  placeholder="••••••••"
+                  autoComplete="current-password"
+                  autoFocus
+                />
+              </div>
+              {loginError && (
+                <p className="text-sm font-medium text-red-600 text-center">{loginError}</p>
+              )}
+              <button type="submit" className="btn-primary w-full justify-center py-3">
+                <LogInIcon size={18} />
+                Accedi
+              </button>
+            </form>
+            <button onClick={() => setSelectedConf(null)} className="btn-secondary w-full mt-3">
+              Indietro
+            </button>
+          </div>
+        </div>
+      </div>
     );
   }
 
