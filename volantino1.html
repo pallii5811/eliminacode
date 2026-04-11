@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ConfessaTiOra — Volantino 1</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+  @page { size: A4 portrait; margin: 0; }
+  body {
+    font-family: 'Inter', -apple-system, sans-serif;
+    background: #fff; color: #1a1a2e;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+  .page {
+    width: 210mm; height: 297mm; margin: 0 auto;
+    padding: 24mm 24mm 16mm;
+    display: flex; flex-direction: column; align-items: center;
+    background: linear-gradient(180deg, #f3f0ff 0%, #fff 35%, #fff 100%);
+    position: relative; overflow: hidden;
+  }
+  .page::before { content:''; position:absolute; top:-60mm; left:-40mm; width:180mm; height:180mm; background: radial-gradient(circle, rgba(109,40,217,0.06) 0%, transparent 70%); pointer-events:none; }
+  .page::after  { content:''; position:absolute; bottom:-40mm; right:-40mm; width:160mm; height:160mm; background: radial-gradient(circle, rgba(245,158,11,0.05) 0%, transparent 70%); pointer-events:none; }
+
+  .logo { width:22mm; height:22mm; background:linear-gradient(135deg,#7c3aed,#6d28d9); border-radius:6mm; display:flex; align-items:center; justify-content:center; box-shadow:0 4px 20px rgba(109,40,217,0.3); margin-bottom:5mm; position:relative; z-index:1; }
+  .logo span { font-size:13mm; color:#fff; font-weight:300; line-height:1; }
+  h1 { font-size:16mm; font-weight:900; letter-spacing:-0.03em; color:#1a1a2e; margin-bottom:3mm; position:relative; z-index:1; }
+  .sub { font-size:4.2mm; color:#6b7280; text-align:center; line-height:1.6; max-width:130mm; margin-bottom:9mm; position:relative; z-index:1; }
+
+  .card {
+    width:100%; max-width:158mm; background:#fff; border-radius:6mm;
+    box-shadow:0 1px 3px rgba(0,0,0,0.06),0 8px 30px rgba(0,0,0,0.04);
+    border:0.3mm solid #e5e7eb; padding:7mm 8mm;
+    display:flex; gap:6mm; align-items:center;
+    position:relative; z-index:1; margin-bottom:7mm;
+  }
+  .info { flex:1; }
+  .info-row { display:flex; align-items:flex-start; gap:4mm; }
+  .icon { width:14mm; height:14mm; background:linear-gradient(135deg,#f59e0b,#ea580c); border-radius:3.5mm; display:flex; align-items:center; justify-content:center; flex-shrink:0; box-shadow:0 3px 12px rgba(245,158,11,0.35); }
+  .icon svg { width:7mm; height:7mm; fill:#fff; }
+  .info-title { font-size:5.5mm; font-weight:900; color:#1a1a2e; }
+  .badge { font-size:2.5mm; font-weight:700; text-transform:uppercase; background:#fef3c7; color:#92400e; padding:0.8mm 2.5mm; border-radius:3mm; }
+  .info-desc { font-size:3.5mm; color:#6b7280; line-height:1.5; margin-top:1.5mm; }
+
+  .qr-side { display:flex; flex-direction:column; align-items:center; gap:2mm; }
+  .qr-title { font-size:3.8mm; font-weight:700; color:#1a1a2e; text-align:center; }
+  .qr-sub { font-size:2.6mm; color:#9ca3af; text-align:center; max-width:52mm; line-height:1.4; }
+  .qr-box { padding:3mm; background:#fff; border-radius:3mm; border:0.3mm solid #e5e7eb; display:inline-block; }
+  .qr-box canvas { display:block; width:42mm; height:42mm; }
+  .qr-url { font-size:2.6mm; color:#6b7280; text-align:center; }
+
+  .big-url { font-size:7.5mm; font-weight:900; color:#6d28d9; text-align:center; text-decoration:underline; text-decoration-color:rgba(109,40,217,0.25); text-underline-offset:2mm; margin-bottom:8mm; position:relative; z-index:1; }
+
+  .steps {
+    width:100%; max-width:158mm; background:linear-gradient(135deg,#fffbeb,#fef3c7);
+    border:0.3mm solid #fde68a; border-radius:5mm; padding:6mm 8mm;
+    position:relative; z-index:1; margin-bottom:8mm;
+  }
+  .steps h3 { font-size:4.5mm; font-weight:800; color:#92400e; margin-bottom:4mm; text-align:center; }
+  .steps-row { display:flex; gap:5mm; justify-content:center; }
+  .step { flex:1; text-align:center; }
+  .step-n { width:9mm; height:9mm; background:linear-gradient(135deg,#f59e0b,#d97706); border-radius:50%; display:flex; align-items:center; justify-content:center; margin:0 auto 2.5mm; font-size:4.5mm; font-weight:800; color:#fff; box-shadow:0 2px 8px rgba(245,158,11,0.3); }
+  .step p { font-size:3.2mm; color:#78350f; line-height:1.5; font-weight:500; }
+
+  .footer { margin-top:auto; text-align:center; position:relative; z-index:1; }
+  .footer-line { width:40mm; height:0.3mm; background:#e5e7eb; margin:0 auto 4mm; }
+  .footer p { font-size:3mm; color:#9ca3af; line-height:1.6; }
+
+  @media print { body{background:#fff;} }
+</style>
+</head>
+<body>
+<div class="page">
+  <div class="logo"><span>✝</span></div>
+  <h1>ConfessaTiOra</h1>
+  <p class="sub">Sistema elimina-code digitale per confessionali.<br>Gestisci le code in tempo reale, senza carta.</p>
+
+  <div class="card">
+    <div class="info">
+      <div class="info-row">
+        <div class="icon"><svg viewBox="0 0 24 24"><path d="M15 5v2h3.586l-4.293 4.293 1.414 1.414L20 8.414V12h2V5h-7zM4 12H2v7h7v-2H5.414l4.293-4.293-1.414-1.414L4 15.586V12z"/><rect x="2" y="2" width="8" height="2" rx="1"/><rect x="14" y="20" width="8" height="2" rx="1"/></svg></div>
+        <div>
+          <div style="display:flex;align-items:center;gap:2mm;margin-bottom:1mm">
+            <span class="info-title">Prendi Numero</span>
+            <span class="badge">Fedeli</span>
+          </div>
+          <p class="info-desc">Per i fedeli — prendi il tuo numero<br>e monitora la coda in tempo reale</p>
+        </div>
+      </div>
+    </div>
+    <div class="qr-side">
+      <p class="qr-title">QR Code — Pagina Ticket</p>
+      <p class="qr-sub">Scansiona o proietta questo QR code per permettere ai fedeli di prendere il numero dal telefono</p>
+      <div class="qr-box"><canvas id="qr1"></canvas></div>
+      <p class="qr-url">www.confessatiora.it</p>
+    </div>
+  </div>
+
+  <div class="big-url">www.confessatiora.it</div>
+
+  <div class="steps">
+    <h3>Come prenotarsi</h3>
+    <div class="steps-row">
+      <div class="step"><div class="step-n">1</div><p>Scansiona il QR code<br>o visita il link</p></div>
+      <div class="step"><div class="step-n">2</div><p>Premi "Prenotati Ora"<br>e prendi il tuo numero</p></div>
+      <div class="step"><div class="step-n">3</div><p>Attendi il tuo turno<br>e verrai chiamato sul display</p></div>
+    </div>
+  </div>
+
+  <div class="footer">
+    <div class="footer-line"></div>
+    <p>ConfessaTiOra — Sistema digitale elimina-code per confessionali<br>Stampa o proietta questo foglio per i fedeli</p>
+  </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrious/4.0.2/qrious.min.js"></script>
+<script>
+  new QRious({ element: document.getElementById('qr1'), value: 'https://www.confessatiora.it', size: 600, foreground: '#4c1d95', background: '#ffffff', level: 'H', padding: 0 });
+</script>
+</body>
+</html>
