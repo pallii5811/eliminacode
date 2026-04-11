@@ -236,6 +236,26 @@ export default function DisplayPage() {
             );
           })}
         </div>
+
+        {/* Prossimo Gruppo Banner */}
+        {(() => {
+          const currentNum = confessionals.reduce((max, c) => Math.max(max, c.current_number || 0), 0);
+          if (currentNum <= 0) return null;
+          const groupStart = currentNum + 1;
+          const groupEnd = currentNum + 12;
+          return (
+            <div className="mt-6 w-full max-w-2xl mx-auto rounded-2xl bg-gradient-to-r from-amber-500 to-yellow-400 px-6 py-4 sm:px-10 sm:py-5 text-center shadow-lg shadow-amber-500/20">
+              <p className="text-sm font-bold text-amber-900/70 uppercase tracking-wider mb-1">
+                Prossimo Gruppo
+              </p>
+              <p className="text-2xl sm:text-3xl font-black text-gray-900">
+                da n° <span className="text-amber-900">{String(groupStart).padStart(3, '0')}</span>
+                {' '}a n° <span className="text-amber-900">{String(groupEnd).padStart(3, '0')}</span>
+                <span className="ml-2 text-lg sm:text-xl font-bold text-amber-900/80">si preparino</span>
+              </p>
+            </div>
+          );
+        })()}
       </main>
 
       {/* Audio Activation Overlay */}
