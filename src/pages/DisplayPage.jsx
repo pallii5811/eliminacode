@@ -158,7 +158,7 @@ export default function DisplayPage() {
       </header>
 
       {/* Main Display */}
-      <main className="flex flex-1 items-center justify-center px-6 pb-8 sm:px-10">
+      <main className="flex flex-1 flex-col items-center justify-center px-6 pb-8 sm:px-10">
         <div className={`grid w-full max-w-6xl gap-6 ${
           confessionals.length === 1 ? 'grid-cols-1 max-w-lg' :
           confessionals.length === 2 ? 'grid-cols-2 max-w-3xl' :
