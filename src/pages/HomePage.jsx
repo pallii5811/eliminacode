@@ -56,14 +56,6 @@ export default function HomePage() {
 
       <main className="mx-auto flex min-h-screen max-w-4xl items-center justify-center px-4 py-10">
         <div className="w-full max-w-3xl text-center animate-fade-in">
-          <a
-            href={ticketUrl}
-            className="mb-8 inline-flex items-center gap-2 rounded-2xl bg-gradient-to-r from-amber-500 to-orange-500 px-8 py-4 text-lg font-bold text-white shadow-lg shadow-amber-500/30 transition hover:shadow-xl hover:scale-[1.02]"
-          >
-            <TicketIcon size={22} />
-            Prenotati Ora
-          </a>
-
           <div className="mb-4 inline-flex h-16 w-16 items-center justify-center rounded-2xl bg-sacred-600 text-white shadow-lg shadow-sacred-600/30">
             <span className="text-3xl">✝</span>
           </div>
@@ -74,6 +66,15 @@ export default function HomePage() {
             Sistema elimina-code digitale per confessionali.
             Gestisci le code in tempo reale, senza carta.
           </p>
+          <div className="mt-6">
+            <a
+              href={ticketUrl}
+              className="inline-flex items-center gap-2 rounded-2xl bg-gradient-to-r from-amber-500 to-orange-500 px-8 py-4 text-lg font-bold text-white shadow-lg shadow-amber-500/30 transition hover:shadow-xl hover:scale-[1.02]"
+            >
+              <TicketIcon size={22} />
+              Prenotati Ora
+            </a>
+          </div>
           <div className="mt-10 card mx-auto max-w-2xl text-center">
             <h2 className="mb-2 text-lg font-bold text-gray-900">QR Code — Pagina Ticket</h2>
             <p className="mb-6 text-sm text-gray-500">
