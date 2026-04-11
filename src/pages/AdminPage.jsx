@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
-import { AlertTriangle, CheckCircle2, Power, PowerOff, Save, Shield, LogIn } from 'lucide-react';
+import { Link } from 'react-router-dom';
+import { AlertTriangle, CheckCircle2, Power, PowerOff, Save, Shield, LogIn, Ticket, Settings, Monitor } from 'lucide-react';
 import Header from '../components/Header';
 import { useBookingState } from '../hooks/useBookingState';
 
@@ -253,6 +254,40 @@ export default function AdminPage() {
             </pre>
           </div>
         )}
+
+        <div className="mt-10 mb-4 text-center">
+          <h3 className="text-xl font-black text-gray-900">Pagine del sistema</h3>
+          <p className="mt-1 text-sm text-gray-500">Accedi alle diverse sezioni dell'app</p>
+        </div>
+
+        <div className="grid gap-4 sm:grid-cols-3">
+          <Link to="/ticket" className="card border border-gray-100 hover:border-sacred-200 hover:shadow-lg transition-all group">
+            <div className="mb-3 flex h-14 w-14 items-center justify-center rounded-2xl bg-amber-100 group-hover:bg-amber-200 transition-colors">
+              <Ticket className="h-7 w-7 text-amber-600" />
+            </div>
+            <h4 className="text-lg font-bold text-gray-900">Prendi Numero</h4>
+            <span className="mb-1 inline-block rounded-full bg-amber-100 px-2 py-0.5 text-[10px] font-bold uppercase text-amber-700">Fedeli</span>
+            <p className="text-sm text-gray-500">Per i fedeli — prendi il tuo numero e monitora la coda in tempo reale</p>
+          </Link>
+
+          <Link to="/dashboard" className="card border border-gray-100 hover:border-sacred-200 hover:shadow-lg transition-all group">
+            <div className="mb-3 flex h-14 w-14 items-center justify-center rounded-2xl bg-sacred-100 group-hover:bg-sacred-200 transition-colors">
+              <Settings className="h-7 w-7 text-sacred-600" />
+            </div>
+            <h4 className="text-lg font-bold text-gray-900">Dashboard</h4>
+            <span className="mb-1 inline-block rounded-full bg-sacred-100 px-2 py-0.5 text-[10px] font-bold uppercase text-sacred-700">Operatore</span>
+            <p className="text-sm text-gray-500">Per il sacerdote — chiama il prossimo numero, gestisci la coda</p>
+          </Link>
+
+          <Link to="/display" className="card border border-gray-100 hover:border-sacred-200 hover:shadow-lg transition-all group">
+            <div className="mb-3 flex h-14 w-14 items-center justify-center rounded-2xl bg-gray-100 group-hover:bg-gray-200 transition-colors">
+              <Monitor className="h-7 w-7 text-gray-600" />
+            </div>
+            <h4 className="text-lg font-bold text-gray-900">Display Pubblico</h4>
+            <span className="mb-1 inline-block rounded-full bg-gray-100 px-2 py-0.5 text-[10px] font-bold uppercase text-gray-600">Display</span>
+            <p className="text-sm text-gray-500">Per TV/proiettore — mostra il numero corrente con annuncio vocale</p>
+          </Link>
+        </div>
       </main>
     </div>
   );
