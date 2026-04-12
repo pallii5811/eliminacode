@@ -252,6 +252,21 @@ export const api = {
     return { total, waiting, completed, skipped, called, avgServiceTime };
   },
 
+  async setCurrentNumber(confessionalId, number) {
+    if (isDemo) {
+      demoStore.confessionals = demoStore.confessionals.map(c =>
+        c.id === confessionalId ? { ...c, current_number: number } : c
+      );
+      demoStore.notify();
+      return;
+    }
+    const { error } = await supabase
+      .from('confessionals')
+      .update({ current_number: number })
+      .eq('id', confessionalId);
+    if (error) throw error;
+  },
+
   subscribe(callback) {
     if (isDemo) return demoStore.subscribe(callback);
 

@@ -54,6 +54,12 @@ export default function TicketPage() {
   useEffect(() => {
     if (loadedRef.current || confessionals.length === 0) return;
     loadedRef.current = true;
+
+    // Carica ticket salvato se esiste (del giorno corrente)
+    const saved = loadMyTicket();
+    if (saved) {
+      setMyTicket(saved);
+    }
   }, [confessionals]);
 
   useEffect(() => {

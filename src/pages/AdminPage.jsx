@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { AlertTriangle, CheckCircle2, Power, PowerOff, Save, Shield, LogIn, Ticket, Settings, Monitor } from 'lucide-react';
 import Header from '../components/Header';
 import { useBookingState } from '../hooks/useBookingState';
+import { api } from '../lib/supabase';
 
 const ADMIN_USER = 'admin';
 const ADMIN_PASS = 'simona';
@@ -39,6 +40,8 @@ export default function AdminPage() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [loginError, setLoginError] = useState('');
+  const [displayNumber, setDisplayNumber] = useState('');
+  const [confessionals, setConfessionals] = useState([]);
 
   useEffect(() => {
     const saved = sessionStorage.getItem('admin_auth');
@@ -48,6 +51,11 @@ export default function AdminPage() {
   useEffect(() => {
     setMessage(settings.closedMessage || '');
   }, [settings.closedMessage]);
+
+  useEffect(() => {
+    if (!authenticated) return;
+    api.getConfessionals().then(setConfessionals).catch(() => {});
+  }, [authenticated]);
 
   const handleLogin = (e) => {
     e.preventDefault();
@@ -79,6 +87,27 @@ export default function AdminPage() {
     try {
       await updateSettings({ closedMessage: message });
       setNotice('Messaggio salvato.');
+    } catch (err) {
+      setNotice(err.message);
+    } finally {
+      setSaving(false);
+    }
+  };
+
+  const handleSetDisplayNumber = async () => {
+    const num = parseInt(displayNumber, 10);
+    if (isNaN(num) || num < 0) {
+      setNotice('Inserisci un numero valido');
+      return;
+    }
+    setSaving(true);
+    setNotice('');
+    try {
+      const conf = confessionals[0];
+      if (!conf) throw new Error('Nessun confessionale trovato');
+      await api.setCurrentNumber(conf.id, num);
+      setNotice(`Numero display impostato a ${num}`);
+      setDisplayNumber('');
     } catch (err) {
       setNotice(err.message);
     } finally {
@@ -225,6 +254,32 @@ export default function AdminPage() {
             >
               <Save size={16} />
               Salva Messaggio
+            </button>
+          </div>
+        </div>
+
+        <div className="mb-6 card border border-blue-200 bg-blue-50">
+          <label className="mb-2 block text-sm font-semibold text-gray-900">
+            Imposta numero Display (Confessionale A)
+          </label>
+          <p className="mb-3 text-xs text-gray-600">
+            Inserisci il numero che deve apparire sul display. Es: 24 per mostrare 025 come prossimo.
+          </p>
+          <div className="flex gap-3">
+            <input
+              type="number"
+              value={displayNumber}
+              onChange={(e) => setDisplayNumber(e.target.value)}
+              placeholder="Es: 24"
+              className="flex-1 rounded-2xl border border-gray-200 bg-white px-4 py-3 text-sm text-gray-700 outline-none transition focus:border-sacred-300 focus:ring-4 focus:ring-sacred-100"
+            />
+            <button
+              onClick={handleSetDisplayNumber}
+              disabled={saving || !displayNumber}
+              className="btn-primary disabled:cursor-not-allowed disabled:opacity-50"
+            >
+              <Save size={16} />
+              Imposta
             </button>
           </div>
         </div>
