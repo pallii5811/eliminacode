@@ -101,6 +101,11 @@ export default function OperatorPage() {
   }, [currentTicket, skipTicket]);
 
   const handleReset = useCallback(async () => {
+    const conferma = window.prompt('Scrivi RESET per confermare la cancellazione di tutti i ticket:');
+    if (conferma !== 'RESET') {
+      setShowResetConfirm(false);
+      return;
+    }
     await resetAll();
     setShowResetConfirm(false);
   }, [resetAll]);

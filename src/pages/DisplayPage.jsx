@@ -37,8 +37,8 @@ export default function DisplayPage() {
           callingRef.current = false;
         }
       } else if (e.key === 'r' || e.key === 'R') {
+        // Reset disabilitato dal display per sicurezza
         e.preventDefault();
-        await resetAll();
       } else if (e.key >= '1' && e.key <= '9') {
         const idx = parseInt(e.key, 10) - 1;
         if (idx < confessionals.length) setKioskConfIndex(idx);
