@@ -267,6 +267,72 @@ export const api = {
     if (error) throw error;
   },
 
+  async setNextTicketStart(confessionalId, startNumber) {
+    if (isDemo) {
+      const max = Math.max(...demoStore.tickets.map(t => t.ticket_number), 0);
+      for (let i = max + 1; i < startNumber; i++) {
+        demoStore.tickets.push({
+          id: `dummy-${i}`,
+          confessional_id: confessionalId,
+          ticket_number: i,
+          status: 'skipped',
+          created_at: new Date().toISOString(),
+        });
+      }
+      demoStore.notify();
+      return;
+    }
+    // Inserisci ticket "skipped" per riempire il gap fino a startNumber-1
+    const { data: existing } = await supabase
+      .from('tickets')
+      .select('ticket_number')
+      .eq('confessional_id', confessionalId)
+      .gte('created_at', todayFilter())
+      .order('ticket_number', { ascending: false })
+      .limit(1);
+    
+    const currentMax = existing?.[0]?.ticket_number || 0;
+    
+    for (let i = currentMax + 1; i < startNumber; i++) {
+      await supabase.from('tickets').insert({
+        confessional_id: confessionalId,
+        ticket_number: i,
+        status: 'skipped',
+      });
+    }
+  },
+
+  async createMissingTickets(confessionalId, start, end) {
+    if (isDemo) {
+      for (let i = start; i <= end; i++) {
+        demoStore.tickets.push({
+          id: `fill-${i}`,
+          confessional_id: confessionalId,
+          ticket_number: i,
+          status: 'waiting',
+          created_at: new Date().toISOString(),
+        });
+      }
+      demoStore.notify();
+      return;
+    }
+    // Crea ticket in batch (inserimenti multipli)
+    const tickets = [];
+    for (let i = start; i <= end; i++) {
+      tickets.push({
+        confessional_id: confessionalId,
+        ticket_number: i,
+        status: 'waiting',
+      });
+    }
+    // Inserisci a gruppi di 50 per non sovraccaricare
+    for (let i = 0; i < tickets.length; i += 50) {
+      const batch = tickets.slice(i, i + 50);
+      const { error } = await supabase.from('tickets').insert(batch);
+      if (error) throw error;
+    }
+  },
+
   subscribe(callback) {
     if (isDemo) return demoStore.subscribe(callback);
 

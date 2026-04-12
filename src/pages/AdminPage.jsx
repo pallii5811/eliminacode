@@ -115,6 +115,29 @@ export default function AdminPage() {
     }
   };
 
+  const handleFillGap = async () => {
+    setSaving(true);
+    setNotice('');
+    try {
+      const conf = confessionals[0];
+      if (!conf) throw new Error('Nessun confessionale trovato');
+      // Crea ticket da (current+1) fino a 170
+      const start = conf.current_number + 1;
+      const end = 170;
+      if (start > end) {
+        setNotice('Il display è già oltre 170');
+        setSaving(false);
+        return;
+      }
+      await api.createMissingTickets(conf.id, start, end);
+      setNotice(`Creati ticket da ${start} a ${end}. Ora il sistema continua fino a 170, poi le nuove prenotazioni partiranno da 171.`);
+    } catch (err) {
+      setNotice(err.message);
+    } finally {
+      setSaving(false);
+    }
+  };
+
   if (!authenticated) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-sacred-50 via-white to-sacred-50">
@@ -282,6 +305,24 @@ export default function AdminPage() {
               Imposta
             </button>
           </div>
+        </div>
+
+        <div className="mb-6 card border border-orange-200 bg-orange-50">
+          <label className="mb-2 block text-sm font-semibold text-gray-900">
+            Recupero prenotazioni perse (EMERGENZA)
+          </label>
+          <p className="mb-3 text-xs text-gray-600">
+            Crea ticket fantasma da <b>{confessionals[0]?.current_number + 1 || '?'}</b> fino a <b>170</b>.
+            Così l'operatore può chiamarli fino a 170, poi le nuove prenotazioni online partono da 171.
+          </p>
+          <button
+            onClick={handleFillGap}
+            disabled={saving || !confessionals.length || confessionals[0]?.current_number >= 170}
+            className="w-full btn-primary justify-center py-3 disabled:cursor-not-allowed disabled:opacity-50"
+          >
+            <Ticket size={16} />
+            Crea ticket mancanti fino a 170
+          </button>
         </div>
 
         {(notice || error) && (
