@@ -34,6 +34,9 @@ export function useQueueState() {
     refresh();
     const unsubscribe = api.subscribe(() => refresh());
 
+    // Polling fallback ogni 5s in caso il WebSocket cada
+    const pollInterval = setInterval(() => refresh(), 5000);
+
     const midnightReset = () => {
       const now = new Date();
       const midnight = new Date(now);
@@ -50,6 +53,7 @@ export function useQueueState() {
     return () => {
       mountedRef.current = false;
       unsubscribe();
+      clearInterval(pollInterval);
       clearTimeout(resetTimer);
     };
   }, [refresh]);
