@@ -241,8 +241,8 @@ export default function DisplayPage() {
         {(() => {
           const currentNum = confessionals.reduce((max, c) => Math.max(max, c.current_number || 0), 0);
           if (currentNum <= 0) return null;
-          const groupStart = currentNum + 1;
-          const groupEnd = currentNum + 12;
+          const groupStart = currentNum <= 10 ? 1 : currentNum + 1;
+          const groupEndDisplay = currentNum <= 10 ? 12 : currentNum + 12;
           return (
             <div className="mt-8 w-full max-w-4xl mx-auto text-center">
               <p className="text-4xl sm:text-6xl lg:text-7xl font-black text-white uppercase tracking-wider mb-4">
@@ -250,9 +250,9 @@ export default function DisplayPage() {
               </p>
               <div className="rounded-2xl bg-gradient-to-r from-amber-500 to-yellow-400 px-4 py-4 sm:px-6 sm:py-5 shadow-lg shadow-amber-500/20 overflow-hidden">
                 <p className="text-5xl sm:text-7xl lg:text-[85px] font-[900] text-black whitespace-nowrap leading-tight">
-                  da n° {String(groupStart).padStart(3, '0')} a n° {String(groupEnd).padStart(3, '0')}
+                  da n° {String(groupStart).padStart(3, '0')} a n° {String(groupEndDisplay).padStart(3, '0')}
                 </p>
-                <p className="mt-1 text-2xl sm:text-4xl font-bold text-black">si preparino</p>
+                <p className="mt-1 text-2xl sm:text-4xl font-bold text-white">si preparino</p>
               </div>
             </div>
           );
